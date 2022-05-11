@@ -1,0 +1,7 @@
+0.1.2 - 2022-05-11
+-- Retouching the code to make it more concise
+-- Sorting the output
+-- Support for both CSV/XLSX output
+
+0.1.0 - 2022-05-09
+-- Initial release with support of two sites including scholarshipdb.net and findaphd.com
