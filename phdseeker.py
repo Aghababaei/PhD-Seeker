@@ -17,6 +17,7 @@ class Config:
                 'query': 'https://scholarshipdb.net/scholarships/Program-PhD?page={page}&q={fields}',
                 'title': 'h4 a',
                 'country': '.list-unstyled a.text-success',
+                'date': '.list-unstyled span.text-muted',
                 'link': ".list-unstyled h4 a",
                 },
             'findaphd': {
@@ -24,6 +25,7 @@ class Config:
                 'query': 'https://www.findaphd.com/phds/non-eu-students/?01w0&Keywords={fields}&PG={page}',
                 'title': "h4 text-dark mx-0 mb-3",
                 'country': "country-flag img-responsive phd-result__dept-inst--country-icon",
+                'date': "apply py-2 small",
                 'link': "h4 text-dark mx-0 mb-3",
                 },
             }
@@ -56,6 +58,10 @@ class Config:
         return Config.config[self.repo]['country']
 
     @property
+    def date(self):
+        return Config.config[self.repo]['date']
+
+    @property
     def baseURL(self):
         return next(re.finditer(r'^.+?[^\/:](?=[?\/]|$)', Config.config[self.repo]['query'])).group()
 
@@ -68,6 +74,7 @@ class PhDSeeker:
                                 for item in map(str.strip, keywords.split(','))])
         self.titles = []
         self.countries = []
+        self.dates = []
         self.links = []
         self.maxpagenumber = maxpagenumber+1
         self.file_name = 'PhD_Positions_'+str(date.today())
@@ -88,12 +95,13 @@ class PhDSeeker:
                         if (n:= soup.select_one(c.sought)) is not None:
                             self.sought_number = int(re.search('(\d+)', n.text).group(1))
                         print(f"{self.sought_number} positions found in '{self.keywords}'")
-                    titles, countries, links  = [ soup.select(item) if repo=='scholarshipdb' else soup.find_all(class_=item)
-                                                for item in (c.title, c.country, c.link) ]
+                    titles, countries, dates, links  = [ soup.select(item) if repo=='scholarshipdb' else soup.find_all(class_=item)
+                                                for item in (c.title, c.country, c.date, c.link) ]
                     assert titles!=[], 'No titles found'
-                    for title, country, link in zip(titles, countries, links):
-                        self.titles.append((title.text).strip().replace('"', ''))
+                    for title, country, date, link in zip(titles, countries, dates, links):
+                        self.titles.append((title.text).strip())
                         self.countries.append(country.text if repo=='scholarshipdb' else country['title'])
+                        self.dates.append(date.text.replace('\n', ''))
                         self.links.append(c.baseURL+link['href'])
                 except AssertionError:
                     break
@@ -108,7 +116,7 @@ class PhDSeeker:
     @property
     def positions(self,):
         self.prepare()
-        positions = { "Country": self.countries, "Title": self.titles, "Link": self.links }
+        positions = { "Country": self.countries, "Date": self.dates, "Title": self.titles, "Link": self.links }
         self.df = pd.DataFrame.from_dict(positions, orient='index').transpose()
         self.df.sort_values(by=['Country','Title'], inplace=True)
         return self.df
