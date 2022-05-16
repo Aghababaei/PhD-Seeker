@@ -1,3 +1,6 @@
+0.2.1 - 2022-05-15
+-- Showing the number of sought positions for each repo
+
 0.2.0 - 2022-05-13
 -- Fully Object Oriented design
 -- page query to preset maxmimum page number
