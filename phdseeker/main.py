@@ -67,7 +67,7 @@ class Config:
 
 
 class PhDSeeker:
-    def __init__(self, keywords: str, repos: str='scholarshipdb, findaphd', maxpagenumber: int=10):
+    def __init__(self, keywords: str, repos: str='scholarshipdb, findaphd', maxpage: int=10):
         self.repos = map(str.strip, repos.split(',')) # 'scholarshipdb, findaphd'
         self.keywords = keywords
         self.fields='%20'.join([f"\"{item.replace(' ', '%20')}\""
@@ -76,16 +76,21 @@ class PhDSeeker:
         self.countries = []
         self.dates = []
         self.links = []
-        self.maxpagenumber = maxpagenumber+1
+        self.maxpage = maxpage+1
         self.file_name = 'PhD_Positions_'+str(date.today())
         self.sought_number = 0
+
+    def __str__(self):
+        if self.sought_number:
+            s = ('='*80+'\n#') + 'Sought Ph.D. Positions'.center(78) + ('#\n'+'='*80+'\n')
+            return s + self.df.to_csv(index=False)
 
     def prepare(self):
         headers = {'user-agent': 'curl/7.83.0', 'accept': '*/*', 'scheme': 'https'}
         for repo in self.repos:
             c = Config(repo)
             print(f"{repo.center(80, '-')}")
-            for page in range(1,self.maxpagenumber):
+            for page in range(1,self.maxpage):
                 try:
                     query = c.query.format(fields=self.fields, page=page)
                     # print(query)
@@ -121,18 +126,20 @@ class PhDSeeker:
         self.df.sort_values(by=['Country','Title'], inplace=True)
         return self.df
 
-    def save(self):
+    def save(self, output='both'):
         # Creates excel/csv files based on all revceived data
         df = self.positions
-        df.to_csv(f'{self.file_name}.csv', index=False)
-        df.to_excel(f'{self.file_name}.xlsx', index=False)
+        if output in ('csv', 'both'):
+            df.to_csv(f'{self.file_name}.csv', index=False)
+        if output in ('xlsx', 'both'):
+            df.to_excel(f'{self.file_name}.xlsx', index=False)
 
 
 def main():
     # Comma seperated list of keywords for the field of desired PhD career + presets
     keywords = 'Computer Science, Machine Learning, Deep Learning'
 
-    ps = PhDSeeker(keywords, maxpagenumber=10)
+    ps = PhDSeeker(keywords, maxpage=10)
     ps.save()
 
 if __name__=="__main__":
