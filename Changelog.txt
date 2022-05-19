@@ -1,3 +1,6 @@
+0.3.0 - 2022-05-20
+-- Support command line version named phdseeker-cli
+
 0.2.1 - 2022-05-15
 -- Showing the number of sought positions for each repo
 
