@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 negar-cli
 
@@ -20,13 +21,14 @@ from docopt import docopt
 from main import PhDSeeker
 from constants import __version__
 
+
 def main(args=docopt(__doc__)):
     """
     main()
     ======
     """
     if args['--version']:
-        print (__version__)
+        print(__version__)
         sys.exit()
 
     keywords = args['--keywords']
@@ -38,7 +40,8 @@ def main(args=docopt(__doc__)):
     ps.save(output)
 
     if args['--verbose']:
-        print (ps)
+        print(ps)
+
 
 if __name__ == "__main__":
     main(docopt(__doc__))
