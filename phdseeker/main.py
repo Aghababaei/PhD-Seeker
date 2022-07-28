@@ -5,6 +5,7 @@ import re
 import requests
 import pandas as pd
 from datetime import date
+from dataclasses import dataclass
 from bs4 import BeautifulSoup as bs
 
 # Turns off some warnings
@@ -13,6 +14,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
+@dataclass
 class Config:
     config = {
         'scholarshipdb': {
@@ -77,11 +79,11 @@ class Config:
 class PhDSeeker:
 
     def __init__(self,
-                 keywords: str,
-                 repos: str = 'scholarshipdb, findaphd',
-                 maxpage: int = 10):
+                keywords: str,
+                repos: str = 'scholarshipdb, findaphd',
+                maxpage: int = 10):
         self.repos = map(str.strip,
-                         repos.split(','))  # 'scholarshipdb, findaphd'
+                        repos.split(','))  # 'scholarshipdb, findaphd'
         self.keywords = keywords
         self.fields = '%20'.join([
             f"\"{item.replace(' ', '%20')}\""
@@ -92,7 +94,7 @@ class PhDSeeker:
         self.dates = []
         self.links = []
         self.maxpage = maxpage + 1
-        self.file_name = 'PhD_Positions_' + str(date.today())
+        self.file_name = f"PhD_Positions_{date.today()}"
         self.sought_number = 0
 
     def __str__(self):
@@ -120,8 +122,7 @@ class PhDSeeker:
                     soup = bs(response.text, "html.parser")
                     if page == 1:  # get the number of sought positions
                         if (n := soup.select_one(c.sought)) is not None:
-                            self.sought_number = int(
-                                re.search('(\d+)', n.text).group(1))
+                            self.sought_number = int(re.search('(\d+)', n.text)[1])
                         print(
                             f"{self.sought_number} positions found in '{self.keywords}'"
                         )
