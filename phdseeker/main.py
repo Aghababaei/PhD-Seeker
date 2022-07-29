@@ -1,41 +1,52 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # import libraries
+from ast import keyword
 import re
-import requests
+import httpx
+import http3
 import pandas as pd
+import asyncio
 from datetime import date
+from dataclasses import dataclass
 from bs4 import BeautifulSoup as bs
 
 # Turns off some warnings
 import urllib3
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+
+@dataclass
 class Config:
-    config = {'scholarshipdb': {
-                'sought#': 'h1.title',
-                'query': 'https://scholarshipdb.net/scholarships/Program-PhD?page={page}&q={fields}',
-                'title': 'h4 a',
-                'country': '.list-unstyled a.text-success',
-                'date': '.list-unstyled span.text-muted',
-                'link': ".list-unstyled h4 a",
-                },
-            'findaphd': {
-                'sought#': 'h4.course-count.d-none.d-md-block.h6.mb-0.mt-1',
-                'query': 'https://www.findaphd.com/phds/non-eu-students/?01w0&Keywords={fields}&PG={page}',
-                'title': "h4 text-dark mx-0 mb-3",
-                'country': "country-flag img-responsive phd-result__dept-inst--country-icon",
-                'date': "apply py-2 small",
-                'link': "h4 text-dark mx-0 mb-3",
-                },
-            }
+    config = {
+        'scholarshipdb': {
+            'sought#': 'h1.title',
+            'query':
+            'https://scholarshipdb.net/scholarships/Program-PhD?page={page}&q={fields}',
+            'title': 'h4 a',
+            'country': '.list-unstyled a.text-success',
+            'date': '.list-unstyled span.text-muted',
+            'link': ".list-unstyled h4 a",
+        },
+        'findaphd': {
+            'sought#': 'h4.course-count.d-none.d-md-block.h6.mb-0.mt-1',
+            'query':
+            'https://www.findaphd.com/phds/non-eu-students/?01w0&Keywords={fields}&PG={page}',
+            'title': "h4 text-dark mx-0 mb-3",
+            'country':
+            "country-flag img-responsive phd-result__dept-inst--country-icon",
+            'date': "apply py-2 small",
+            'link': "h4 text-dark mx-0 mb-3",
+        },
+    }
 
     def __init__(self, repo='scholarshipdb'):
         self.repo = repo
 
     @classmethod
     def repos(cls):
-        return ','.join([repo for repo in cls.config])
+        return ','.join(list(cls.config))
 
     @property
     def query(self):
@@ -63,67 +74,118 @@ class Config:
 
     @property
     def baseURL(self):
-        return next(re.finditer(r'^.+?[^\/:](?=[?\/]|$)', Config.config[self.repo]['query'])).group()
+        return next(
+            re.finditer(r'^.+?[^\/:](?=[?\/]|$)',
+                        Config.config[self.repo]['query'])).group()
 
 
 class PhDSeeker:
-    def __init__(self, keywords: str, repos: str='scholarshipdb, findaphd', maxpage: int=10):
-        self.repos = map(str.strip, repos.split(',')) # 'scholarshipdb, findaphd'
+
+    def __init__(self,
+                keywords: str,
+                repos: str = 'scholarshipdb, findaphd',
+                maxpage: int = 10):
+        self.repos = map(str.strip,
+                        repos.split(','))  # 'scholarshipdb, findaphd'
         self.keywords = keywords
-        self.fields='%20'.join([f"\"{item.replace(' ', '%20')}\""
-                                for item in map(str.strip, keywords.split(','))])
+        self.fields = '%20'.join([
+            f"\"{item.replace(' ', '%20')}\""
+            for item in map(str.strip, keywords.split(','))
+        ])
         self.titles = []
         self.countries = []
         self.dates = []
         self.links = []
-        self.maxpage = maxpage+1
-        self.file_name = 'PhD_Positions_'+str(date.today())
+        self.maxpage = maxpage + 1
+        self.file_name = f"PhD_Positions_{date.today()}"
         self.sought_number = 0
+        self.loop = asyncio.get_event_loop()
 
     def __str__(self):
         if self.sought_number:
-            s = ('='*80+'\n#') + 'Sought Ph.D. Positions'.center(78) + ('#\n'+'='*80+'\n')
+            s = ('=' * 80 + '\n#') + 'Sought Ph.D. Positions'.center(78) + (
+                '#\n' + '=' * 80 + '\n')
             return s + self.df.to_csv(index=False)
 
-    def prepare(self):
-        headers = {'user-agent': 'curl/7.83.0', 'accept': '*/*', 'scheme': 'https'}
+    async def __get_page__(self, repo, page):
+        headers = {
+            'user-agent': 'curl/7.83.0',
+            'accept': '*/*',
+            'scheme': 'http',
+            # 'Content-Length': '0',
+        }
+        c = Config(repo)
+        try:
+            query = c.query.format(fields=self.fields, page=page)
+            if repo!='findaphd':
+                client = http3.AsyncClient()
+                keywords = {'verify': False}
+            else:
+                client = httpx.AsyncClient()
+                keywords = {}
+            response = await client.get(query,
+                        headers=headers,
+                        **keywords,
+                        )
+            soup = bs(response.text, "html.parser")
+            if page == 1:  # get the number of sought positions
+                if (n := soup.select_one(c.sought)) is not None:
+                    self.sought_number = int(re.search('(\d+)', n.text)[1])
+                print(
+                    f"{self.sought_number} positions found in '{self.keywords}'"
+                )
+            titles, countries, dates, links = [
+                soup.select(item) if repo == 'scholarshipdb' else
+                soup.find_all(class_=item)
+                for item in (c.title, c.country, c.date, c.link)
+            ]
+            assert titles != [], 'No titles found'
+            for title, country, date, link in zip(
+                    titles, countries, dates, links):
+                self.titles.append((title.text).strip())
+                self.countries.append(
+                    country.text if repo ==
+                    'scholarshipdb' else country['title'])
+                self.dates.append(date.text.replace('\n', ''))
+                self.links.append(c.baseURL + link['href'])
+        except AssertionError:
+            return False # break
+        except Exception as e:
+            print(e)
+            return False # break
+        finally:
+            if self.sought_number:
+                print(
+                    f"\rPage {page} has been fetched from {c.baseURL}!",
+                    end="")
+            return True
+
+    async def prepare(self):
         for repo in self.repos:
-            c = Config(repo)
             print(f"{repo.center(80, '-')}")
-            for page in range(1,self.maxpage):
-                try:
-                    query = c.query.format(fields=self.fields, page=page)
-                    # print(query)
-                    response = requests.get(query, headers = headers, verify=False)
-                    soup = bs(response.text, "html.parser")
-                    if page==1: # get the number of sought positions
-                        if (n:= soup.select_one(c.sought)) is not None:
-                            self.sought_number = int(re.search('(\d+)', n.text).group(1))
-                        print(f"{self.sought_number} positions found in '{self.keywords}'")
-                    titles, countries, dates, links  = [ soup.select(item) if repo=='scholarshipdb' else soup.find_all(class_=item)
-                                                for item in (c.title, c.country, c.date, c.link) ]
-                    assert titles!=[], 'No titles found'
-                    for title, country, date, link in zip(titles, countries, dates, links):
-                        self.titles.append((title.text).strip())
-                        self.countries.append(country.text if repo=='scholarshipdb' else country['title'])
-                        self.dates.append(date.text.replace('\n', ''))
-                        self.links.append(c.baseURL+link['href'])
-                except AssertionError:
-                    break
-                except Exception as e:
-                    print(e)
-                    break
-                finally:
-                    if self.sought_number:
-                        print(f"\r{page} pages have been fetched from {c.baseURL}!", end="")
+            tasks = [asyncio.create_task(self.__get_page__(repo, page)) for page in range(1, self.maxpage)]
+            try:
+                await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
+            except Exception:
+                for t in tasks:
+                    t.cancel()
             print()
 
     @property
-    def positions(self,):
-        self.prepare()
-        positions = { "Country": self.countries, "Date": self.dates, "Title": self.titles, "Link": self.links }
+    def positions(self, ):
+        # asyncio.run(self.prepare())
+        try:
+            self.loop.run_until_complete(self.prepare())
+        finally:
+            self.loop.close()
+        positions = {
+            "Country": self.countries,
+            "Date": self.dates,
+            "Title": self.titles,
+            "Link": self.links
+        }
         self.df = pd.DataFrame.from_dict(positions, orient='index').transpose()
-        self.df.sort_values(by=['Country','Title'], inplace=True)
+        self.df.sort_values(by=['Country', 'Title'], inplace=True)
         return self.df
 
     def save(self, output='both'):
@@ -142,5 +204,6 @@ def main():
     ps = PhDSeeker(keywords, maxpage=10)
     ps.save()
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()

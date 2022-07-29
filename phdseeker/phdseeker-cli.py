@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 '''
 negar-cli
 
@@ -19,6 +20,7 @@ import sys
 from docopt import docopt
 from main import PhDSeeker
 from constants import __version__
+from time import perf_counter
 
 def main(args=docopt(__doc__)):
     """
@@ -26,7 +28,7 @@ def main(args=docopt(__doc__)):
     ======
     """
     if args['--version']:
-        print (__version__)
+        print(__version__)
         sys.exit()
 
     keywords = args['--keywords']
@@ -34,11 +36,14 @@ def main(args=docopt(__doc__)):
     verbose = args['--verbose']
     output = args['--output']
 
+    s = perf_counter()
     ps = PhDSeeker(keywords, maxpage=maxpage)
     ps.save(output)
+    print(f"Elapsed time is {perf_counter()-s:.2f} seconds.")
 
     if args['--verbose']:
-        print (ps)
+        print(ps)
+
 
 if __name__ == "__main__":
     main(docopt(__doc__))
