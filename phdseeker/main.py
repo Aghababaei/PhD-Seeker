@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 # import libraries
+from ast import keyword
 import re
+import httpx
 import http3
-import requests
 import pandas as pd
 import asyncio
 from datetime import date
@@ -118,15 +119,14 @@ class PhDSeeker:
             query = c.query.format(fields=self.fields, page=page)
             if repo!='findaphd':
                 client = http3.AsyncClient()
-                response = await client.get(query,
-                                        headers=headers,
-                                        verify=False
-                                        )
+                keywords = {'verify': False}
             else:
-                response = requests.get(query,
-                                    headers=headers,
-                                    verify=False
-                                    )
+                client = httpx.AsyncClient()
+                keywords = {}
+            response = await client.get(query,
+                        headers=headers,
+                        **keywords,
+                        )
             soup = bs(response.text, "html.parser")
             if page == 1:  # get the number of sought positions
                 if (n := soup.select_one(c.sought)) is not None:

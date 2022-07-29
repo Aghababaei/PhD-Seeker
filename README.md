@@ -17,6 +17,7 @@ Simply modify the keywords and you will receive a CSV/XLSX file containing the l
 - [ ] Finding and removing overlapped positions
 - [ ] Adding LinkedIn search to get informed directly from university professors
 - [X] Getting the keywords from command line instead of hard-coding the source
+- [X] Fetching pages simultaneously
 - [ ] GUI support
 
 # Usage
@@ -26,5 +27,5 @@ python phdseeker-cli -k 'Computer Science, Machine Learning'
 
 # Requirements
 ```
-pip install docopt
+pip install docopt http3 httpx brotlipy
 ```
