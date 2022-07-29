@@ -2,8 +2,10 @@
 
 # import libraries
 import re
+import http3
 import requests
 import pandas as pd
+import asyncio
 from datetime import date
 from dataclasses import dataclass
 from bs4 import BeautifulSoup as bs
@@ -43,7 +45,7 @@ class Config:
 
     @classmethod
     def repos(cls):
-        return ','.join([repo for repo in cls.config])
+        return ','.join(list(cls.config))
 
     @property
     def query(self):
@@ -96,6 +98,7 @@ class PhDSeeker:
         self.maxpage = maxpage + 1
         self.file_name = f"PhD_Positions_{date.today()}"
         self.sought_number = 0
+        self.loop = asyncio.get_event_loop()
 
     def __str__(self):
         if self.sought_number:
@@ -103,58 +106,78 @@ class PhDSeeker:
                 '#\n' + '=' * 80 + '\n')
             return s + self.df.to_csv(index=False)
 
-    def prepare(self):
+    async def __get_page__(self, repo, page):
         headers = {
             'user-agent': 'curl/7.83.0',
             'accept': '*/*',
-            'scheme': 'https'
+            'scheme': 'http',
+            # 'Content-Length': '0',
         }
+        c = Config(repo)
+        try:
+            query = c.query.format(fields=self.fields, page=page)
+            if repo!='findaphd':
+                client = http3.AsyncClient()
+                response = await client.get(query,
+                                        headers=headers,
+                                        verify=False
+                                        )
+            else:
+                response = requests.get(query,
+                                    headers=headers,
+                                    verify=False
+                                    )
+            soup = bs(response.text, "html.parser")
+            if page == 1:  # get the number of sought positions
+                if (n := soup.select_one(c.sought)) is not None:
+                    self.sought_number = int(re.search('(\d+)', n.text)[1])
+                print(
+                    f"{self.sought_number} positions found in '{self.keywords}'"
+                )
+            titles, countries, dates, links = [
+                soup.select(item) if repo == 'scholarshipdb' else
+                soup.find_all(class_=item)
+                for item in (c.title, c.country, c.date, c.link)
+            ]
+            assert titles != [], 'No titles found'
+            for title, country, date, link in zip(
+                    titles, countries, dates, links):
+                self.titles.append((title.text).strip())
+                self.countries.append(
+                    country.text if repo ==
+                    'scholarshipdb' else country['title'])
+                self.dates.append(date.text.replace('\n', ''))
+                self.links.append(c.baseURL + link['href'])
+        except AssertionError:
+            return False # break
+        except Exception as e:
+            print(e)
+            return False # break
+        finally:
+            if self.sought_number:
+                print(
+                    f"\rPage {page} has been fetched from {c.baseURL}!",
+                    end="")
+            return True
+
+    async def prepare(self):
         for repo in self.repos:
-            c = Config(repo)
             print(f"{repo.center(80, '-')}")
-            for page in range(1, self.maxpage):
-                try:
-                    query = c.query.format(fields=self.fields, page=page)
-                    # print(query)
-                    response = requests.get(query,
-                                            headers=headers,
-                                            verify=False)
-                    soup = bs(response.text, "html.parser")
-                    if page == 1:  # get the number of sought positions
-                        if (n := soup.select_one(c.sought)) is not None:
-                            self.sought_number = int(re.search('(\d+)', n.text)[1])
-                        print(
-                            f"{self.sought_number} positions found in '{self.keywords}'"
-                        )
-                    titles, countries, dates, links = [
-                        soup.select(item) if repo == 'scholarshipdb' else
-                        soup.find_all(class_=item)
-                        for item in (c.title, c.country, c.date, c.link)
-                    ]
-                    assert titles != [], 'No titles found'
-                    for title, country, date, link in zip(
-                            titles, countries, dates, links):
-                        self.titles.append((title.text).strip())
-                        self.countries.append(
-                            country.text if repo ==
-                            'scholarshipdb' else country['title'])
-                        self.dates.append(date.text.replace('\n', ''))
-                        self.links.append(c.baseURL + link['href'])
-                except AssertionError:
-                    break
-                except Exception as e:
-                    print(e)
-                    break
-                finally:
-                    if self.sought_number:
-                        print(
-                            f"\r{page} pages have been fetched from {c.baseURL}!",
-                            end="")
+            tasks = [asyncio.create_task(self.__get_page__(repo, page)) for page in range(1, self.maxpage)]
+            try:
+                await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
+            except Exception:
+                for t in tasks:
+                    t.cancel()
             print()
 
     @property
     def positions(self, ):
-        self.prepare()
+        # asyncio.run(self.prepare())
+        try:
+            self.loop.run_until_complete(self.prepare())
+        finally:
+            self.loop.close()
         positions = {
             "Country": self.countries,
             "Date": self.dates,
