@@ -8,6 +8,7 @@ import asyncio
 from datetime import date
 from dataclasses import dataclass
 from bs4 import BeautifulSoup as bs
+from rich_dataframe import prettify
 
 # Turns off some warnings
 import urllib3
@@ -96,6 +97,7 @@ class PhDSeeker:
         self.links = []
         self.maxpage = maxpage + 1
         self.file_name = f"PhD_Positions_{date.today()}"
+        self.df = None # DataFrame of found positions
         self.sought_number = 0
         self.loop = asyncio.get_event_loop()
 
@@ -103,7 +105,8 @@ class PhDSeeker:
         if self.sought_number:
             s = ('=' * 80 + '\n#') + 'Sought Ph.D. Positions'.center(78) + (
                 '#\n' + '=' * 80 + '\n')
-            return s + self.df.to_csv(index=False)
+            prettify(self.df[['Country', 'Date', 'Title']], clear_console=False)
+            return ''#s + self.df.to_csv(index=False)
 
     async def __get_page__(self, repo, page):
         headers = {
@@ -190,7 +193,7 @@ class PhDSeeker:
         # eval is not applicable to the empty string
         self.df['timedelta'] = self.df['timedelta'].apply(lambda x: eval(x) if x else x)
         self.df.sort_values(by=['Country', 'timedelta', 'Title'], inplace=True)
-        self.df = self.df.drop('timedelta', axis=1)
+        self.df = self.df.drop('timedelta', axis=1).reset_index(drop=True)
         return self.df
 
     def save(self, output='both'):
