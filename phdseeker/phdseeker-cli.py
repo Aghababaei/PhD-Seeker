@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-negar-cli
+phdseeker-cli
 
 Usage:
     phdseeker-cli -h

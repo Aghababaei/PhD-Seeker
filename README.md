@@ -22,7 +22,24 @@ Simply modify the keywords and you will receive a CSV/XLSX file containing the l
 
 # Usage
 ```
-python phdseeker-cli -k 'Computer Science, Machine Learning'
+python phdseeker-cli.py
+
+Usage:
+    python phdseeker-cli.py -h
+    python phdseeker-cli.py -V
+    python phdseeker-cli.py [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
+
+options:
+    -h --help                       Show this screen.
+    -V --version                    Show version.
+    -v --verbose                    Show the sought position on the terminal.
+    -k <keywords>, --keywords=<keywords>    Declare desired keywords to seek. [default: Computer Science, Machine Learning, Deep Learning]
+    -o <filetype(s), --output=<filetype(s)>     Set the output type csv/xlsx/both [default: both]
+    --maxpage=<n>                   Maximum number of pages to fetch. [default: 10]
+```
+### example
+```
+python phdseeker-cli.py -k 'Computer Science, Machine Learning'
 ```
 
 # Requirements
