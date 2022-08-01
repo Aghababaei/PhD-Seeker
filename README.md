@@ -34,7 +34,7 @@ options:
     -V --version                    Show version.
     -v --verbose                    Show the sought position on the terminal.
     -k <keywords>, --keywords=<keywords>    Declare desired keywords to seek. [default: Computer Science, Machine Learning, Deep Learning]
-    -o <filetype(s), --output=<filetype(s)>     Set the output type csv/xlsx/both [default: both]
+    -o <filetype(s)>, --output=<filetype(s)>     Set the output type csv/xlsx/both [default: both]
     --maxpage=<n>                   Maximum number of pages to fetch. [default: 10]
 ```
 ### example

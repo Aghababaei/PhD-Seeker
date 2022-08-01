@@ -1,4 +1,4 @@
-0.3.3 - 2022-08-01
+0.3.4 - 2022-08-01
 -- Readme update
 -- fixed issue with the total number of sought positions
 
