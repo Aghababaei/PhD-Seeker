@@ -190,7 +190,8 @@ class PhDSeeker:
         # eval is not applicable to the empty string
         self.df['timedelta'] = self.df['timedelta'].apply(lambda x: eval(x) if x else x)
         self.df.sort_values(by=['Country', 'timedelta', 'Title'], inplace=True)
-        return self.df.drop('timedelta', axis=1)
+        self.df = self.df.drop('timedelta', axis=1)
+        return self.df
 
     def save(self, output='both'):
         # Creates excel/csv files based on all revceived data
