@@ -128,9 +128,9 @@ class PhDSeeker:
             soup = bs(response.text, "html.parser")
             if page == 1:  # get the number of sought positions
                 if (n := soup.select_one(c.sought)) is not None:
-                    self.sought_number = int(re.search('(\d+)', n.text)[1])
+                    self.sought_number = int(re.search('(\d+[,\d*]*)', n.text)[1].replace(',',''))
                 print(
-                    f"{self.sought_number} positions found in '{self.keywords}'"
+                    f"\r{self.sought_number} positions found in '{self.keywords}' {' '*(55-len(self.keywords))}"
                 )
             titles, countries, dates, links = [
                 soup.select(item) if repo == 'scholarshipdb' else
