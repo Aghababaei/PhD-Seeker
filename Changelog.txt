@@ -1,3 +1,6 @@
+0.3.6 - 2022-08-02
+-- The output is show in a tabular format in verbose mode.
+
 0.3.5 - 2022-08-01
 -- Fixed issue with verbose mode as it needs not to show the `timedelta` column.
 
