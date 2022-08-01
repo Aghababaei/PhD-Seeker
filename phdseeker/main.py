@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# import libraries
-from ast import keyword
 import re
 import httpx
 import http3
@@ -185,8 +183,14 @@ class PhDSeeker:
             "Link": self.links
         }
         self.df = pd.DataFrame.from_dict(positions, orient='index').transpose()
-        self.df.sort_values(by=['Country', 'Title'], inplace=True)
-        return self.df
+        self.df['timedelta'] = self.df["Date"].apply(lambda x: re.sub('about|ago', '', x).strip())
+        name2days ={'minutes':'*1', 'hours':'*60', 'hour':'*60', 'days':'*1440', 'day':'*1440',
+                    'weeks':'*10080', 'week':'*10080', 'months':'*43200', 'month':'*43200'}
+        self.df.replace({'timedelta': name2days }, regex=True, inplace=True)
+        # eval is not applicable to the empty string
+        self.df['timedelta'] = self.df['timedelta'].apply(lambda x: eval(x) if x else x)
+        self.df.sort_values(by=['Country', 'timedelta', 'Title'], inplace=True)
+        return self.df.drop('timedelta', axis=1)
 
     def save(self, output='both'):
         # Creates excel/csv files based on all revceived data
