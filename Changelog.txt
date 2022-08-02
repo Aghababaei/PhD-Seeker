@@ -1,3 +1,7 @@
+0.3.7 - 2022-08-02
+-- Retouching the output screen.
+-- `rich` module is another new dependency.
+
 0.3.6 - 2022-08-02
 -- The output is show in a tabular format in verbose mode.
 

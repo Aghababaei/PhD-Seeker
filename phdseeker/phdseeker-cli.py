@@ -21,6 +21,7 @@ from docopt import docopt
 from main import PhDSeeker
 from constants import __version__
 from time import perf_counter
+from rich import print
 
 def main(args=docopt(__doc__)):
     """
@@ -36,10 +37,12 @@ def main(args=docopt(__doc__)):
     verbose = args['--verbose']
     output = args['--output']
 
+    s = 's' if maxpage>1 else ''
+    print(f"Searching for the Keywords '{keywords}' in up to {maxpage} page{s}.")
     s = perf_counter()
     ps = PhDSeeker(keywords, maxpage=maxpage)
     ps.save(output)
-    print(f"Elapsed time is {perf_counter()-s:.2f} seconds.")
+    print(f"\nElapsed time is {perf_counter()-s:.2f} seconds.")
 
     if args['--verbose']:
         print(ps)

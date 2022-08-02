@@ -132,8 +132,10 @@ class PhDSeeker:
             if page == 1:  # get the number of sought positions
                 if (n := soup.select_one(c.sought)) is not None:
                     self.sought_number = int(re.search('(\d+[,\d*]*)', n.text)[1].replace(',',''))
+                sn = f"<< {self.sought_number} positions found >>"
                 print(
-                    f"\r{self.sought_number} positions found in '{self.keywords}' {' '*(55-len(self.keywords))}"
+                    # f"\r[[ {self.sought_number} positions found ]] {' '*(55-len(self.keywords))}"
+                    f"\r {sn.center(80)}"
                 )
             titles, countries, dates, links = [
                 soup.select(item) if repo == 'scholarshipdb' else
@@ -163,14 +165,14 @@ class PhDSeeker:
 
     async def prepare(self):
         for repo in self.repos:
-            print(f"{repo.center(80, '-')}")
+            print(f"\r{('::[ '+repo+' ]::').center(80, '=')}")
             tasks = [asyncio.create_task(self.__get_page__(repo, page)) for page in range(1, self.maxpage)]
             try:
                 await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
             except Exception:
                 for t in tasks:
                     t.cancel()
-            print()
+            # print()
 
     @property
     def positions(self, ):

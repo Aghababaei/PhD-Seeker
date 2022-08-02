@@ -48,12 +48,12 @@ options:
 ```
 python phdseeker-cli.py -k 'Computer Science, Machine Learning' --maxpage=1 -v
 
----------------------------------scholarshipdb----------------------------------
-719 positions found in 'Computer Science, Machine Learning'                      
-Page 1 has been fetched from https://scholarshipdb.net!
-------------------------------------findaphd------------------------------------
-64 positions found in 'Computer Science, Machine Learning'                      
-Page 1 has been fetched from https://www.findaphd.com!
+Searching for the Keywords 'Computer Science, Machine Learning' in up to 1 page.
+=============================::[ scholarshipdb ]::==============================
+                            << 706 positions found >>
+================================::[ findaphd ]::================================
+                             << 64 positions found >>
+Page 1 has been fetched from https://www.findaphd.com!!
 Elapsed time is 3.49 seconds.
 ┏━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃    ┃ Country        ┃ Date               ┃ Title                                                 ┃
@@ -105,5 +105,5 @@ Elapsed time is 3.49 seconds.
 
 # Requirements
 ```
-pip install docopt http3 httpx brotlipy
+pip install rich docopt http3 httpx brotlipy
 ```
