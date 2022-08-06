@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import sys
 import httpx
 import http3
 import pandas as pd
@@ -8,7 +9,9 @@ import asyncio
 from datetime import date
 from dataclasses import dataclass
 from bs4 import BeautifulSoup as bs
-from rich_dataframe import prettify
+from pathlib import Path
+sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
+from phdseeker.rich_dataframe import prettify
 
 # Turns off some warnings
 import urllib3

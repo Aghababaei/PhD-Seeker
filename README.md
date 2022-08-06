@@ -27,14 +27,60 @@ Simply modify the keywords and you will receive a CSV/XLSX file containing the l
 - [X] Fetching pages simultaneously
 - [ ] GUI support
 
+Installation
+==============
+
+## PyPi
+
+**phdseeker** is available on [PyPi](http://pypi.python.org/pypi/phdseeker):
+
+    $ pip install phdseeker
+
+## Git
+
+You can get latest stable changes from github server:
+
+    $ git clone https://github.com/Aghababaei/PhD-Seeker.git
+    $ cd PhD-Seeker
+    $ python setup.py install
+
+## Zip, Tarball
+
+You can download the latest tarball.
+
+### *nix
+
+Get the latest tarball & install:
+
+    $ wget -O phdseeker-master.tar.gz https://github.com/Aghababaei/PhD-Seeker/archive/master.tar.gz
+    $ tar xvzf phdseeker-master.tar.gz && cd PhD-Seeker-main
+    $ python setup.py install
+
+### Windows
+
+Download latest zip archive.
+
+https://github.com/Aghababaei/PhD-Seeker/archive/master.zip
+
+Decompress it, and run the following command in root directory of `PhD-Seeker`
+
+    $ python setup.py install
+
+#### Requirements
+**phdseeker**  is relied on `rich`, `docopt`, `http3`, `httpx`, and `brotlipy`.
+If you want to just run it by calling the script, you need to install its dependencies, in advance.
+```
+pip install rich docopt http3 httpx brotlipy
+```
+
 # Usage
 ```
-python phdseeker-cli.py
+phdseeker
 
 Usage:
-    python phdseeker-cli.py -h
-    python phdseeker-cli.py -V
-    python phdseeker-cli.py [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
+    phdseeker -h
+    phdseeker -V
+    phdseeker [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
 
 options:
     -h --help                       Show this screen.
@@ -46,7 +92,7 @@ options:
 ```
 ### usage example
 ```
-python phdseeker-cli.py -k 'Computer Science, Machine Learning' --maxpage=1 -v
+phdseeker -k 'Computer Science, Machine Learning' --maxpage=1 -v
 
 Searching for the Keywords 'Computer Science, Machine Learning' in up to 1 page.
 =============================::[ scholarshipdb ]::==============================
@@ -101,9 +147,4 @@ Elapsed time is 3.49 seconds.
 │    │                │                    │ Communication -- Mississippi State University         │
 └────┴────────────────┴────────────────────┴───────────────────────────────────────────────────────┘
                                All 21 found positions are shown here. 
-```
-
-# Requirements
-```
-pip install rich docopt http3 httpx brotlipy
 ```

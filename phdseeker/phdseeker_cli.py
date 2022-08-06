@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 '''
-phdseeker-cli
+phdseeker
 
 Usage:
-    phdseeker-cli -h
-    phdseeker-cli -V
-    phdseeker-cli [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
+    phdseeker -h
+    phdseeker -V
+    phdseeker [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
 
 options:
     -h --help                       Show this screen.
@@ -18,10 +18,12 @@ options:
 
 import sys
 from docopt import docopt
-from main import PhDSeeker
-from constants import __version__
 from time import perf_counter
 from rich import print
+from pathlib import Path
+sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
+from phdseeker.main import PhDSeeker
+from phdseeker.constants import __version__
 
 def main(args=docopt(__doc__)):
     """

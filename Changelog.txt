@@ -1,3 +1,7 @@
+0.3.8 - 2022-08-06
+-- Preparing PyPi package
+-- Filename change in compliance with setuptools confing
+
 0.3.7 - 2022-08-02
 -- Retouching the output screen.
 -- `rich` module is another new dependency.
