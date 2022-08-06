@@ -1,3 +1,6 @@
+0.3.11 - 2022-08-06
+-- missing `openpyxl` as another dependency to write the output in the excel file
+
 0.3.10 - 2022-08-06
 -- http3.client.AsyncClient --> close()
 -- httpx._client.AsyncClient --> aclose()

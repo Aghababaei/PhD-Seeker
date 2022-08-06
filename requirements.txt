@@ -3,4 +3,5 @@ http3
 httpx
 docopt
 pandas
+openpyxl
 brotlipy

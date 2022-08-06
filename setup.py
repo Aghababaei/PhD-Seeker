@@ -24,6 +24,7 @@ setup(
         'httpx',
         'pandas',
         'docopt',
+        'openpyxl',
         'brotlipy',
     ],
     python_requires=">=3.7",
