@@ -131,6 +131,11 @@ class PhDSeeker:
                         headers=headers,
                         **keywords,
                         )
+            # print(' '*70+str(type(client)))
+            if isinstance(client, http3.client.AsyncClient):
+                await client.close()
+            if isinstance(client, httpx._client.AsyncClient):
+                await client.aclose()
             soup = bs(response.text, "html.parser")
             if page == 1:  # get the number of sought positions
                 if (n := soup.select_one(c.sought)) is not None:

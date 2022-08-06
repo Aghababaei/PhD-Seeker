@@ -2,4 +2,5 @@ rich
 http3
 httpx
 docopt
+pandas
 brotlipy
