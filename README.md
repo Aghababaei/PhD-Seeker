@@ -67,8 +67,8 @@ Decompress it, and run the following command in root directory of `PhD-Seeker`
     $ python setup.py install
 
 #### Requirements
-**phdseeker**  is relied on `rich`, `pandas`, `docopt`, `http3`, `httpx`, and `brotlipy`.
-If you want to just run it by calling the script, you need to install its dependencies, in advance.
+**phdseeker**  is relied on several great python packages.
+If you want to just run the code by calling the script, you need to install its dependencies, in advance.
 ```
 pip install -r requirements.txt
 ```
