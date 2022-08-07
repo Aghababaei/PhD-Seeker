@@ -27,7 +27,7 @@ setup(
         'openpyxl',
         'brotlipy',
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     package_dir={'phdseeker': 'phdseeker'},
     description="PhD Seeker is a python web scraper to search for fully funded doctorate positions, advertised on well-known academic position websites.",
     license="GPLv3",

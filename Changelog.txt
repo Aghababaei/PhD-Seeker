@@ -1,3 +1,8 @@
+0.3.13 - 2022-08-08
+-- fixed some issue with printing.
+-- print out the name of output files.
+-- fixed the minimum version of python to 3.8 for PyPi because of using walrus operator
+
 0.3.12 - 2022-08-07
 -- Bettter ouptut.
 

@@ -31,7 +31,7 @@ def main(args=docopt(__doc__)):
     ======
     """
     if args['--version']:
-        console.print(f"PhD-Seeker Version {__version__}")
+        rich.print(f"PhD-Seeker Version {__version__}")
         sys.exit()
 
     keywords = args['--keywords']
@@ -47,7 +47,8 @@ def main(args=docopt(__doc__)):
     rich.print(f"Elapsed time is {perf_counter()-s:.2f}")
 
     if args['--verbose']:
-        rich.print(ps)
+        if ps.sought_number:
+            rich.print(ps)
 
 
 if __name__ == "__main__":

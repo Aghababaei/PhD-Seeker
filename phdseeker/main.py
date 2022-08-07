@@ -142,7 +142,10 @@ class PhDSeeker:
                 if (n := soup.select_one(c.sought)) is not None:
                     foundPositions = int(re.search('(\d+[,\d*]*)', n.text)[1].replace(',',''))
                     self.sought_number += foundPositions
-                sn = f"<< {foundPositions} positions found >>"
+                try:
+                    sn = f"<< {foundPositions} positions found >>"
+                except:
+                    sn = f"<< No positions found >>"
                 print(
                     # f"\r[[ {self.sought_number} positions found ]] {' '*(55-len(self.keywords))}"
                     f"\r {sn.center(80)}"
@@ -213,10 +216,12 @@ class PhDSeeker:
             rich.print(f"\n{self.sought_number} positions have been found in total.")
             if output in ('csv', 'both'):
                 df.to_csv(f'{self.file_name}.csv', index=False)
+                rich.print(f'[blue]{self.file_name}.csv saved![/blue]')
             if output in ('xlsx', 'both'):
                 df.to_excel(f'{self.file_name}.xlsx', index=False)
+                rich.print(f'[blue]{self.file_name}.xlsx saved![/blue]')
         else:
-            print('[blink][red] >>> No positions found, change your keyword. <<< [/red][/blink]')
+            rich.print('[blink][red] >>> No positions found, change your keyword. <<< [/red][/blink]')
 
 
 def main():
