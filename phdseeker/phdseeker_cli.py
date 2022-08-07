@@ -19,7 +19,7 @@ options:
 import sys
 from docopt import docopt
 from time import perf_counter
-from rich import print
+import rich
 from pathlib import Path
 sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from phdseeker.main import PhDSeeker
@@ -31,7 +31,7 @@ def main(args=docopt(__doc__)):
     ======
     """
     if args['--version']:
-        print(f"PhD-Seeker Version {__version__}")
+        console.print(f"PhD-Seeker Version {__version__}")
         sys.exit()
 
     keywords = args['--keywords']
@@ -40,14 +40,14 @@ def main(args=docopt(__doc__)):
     output = args['--output']
 
     s = 's' if maxpage>1 else ''
-    print(f"Searching for the Keywords '{keywords}' in up to {maxpage} page{s}.")
+    rich.print(f"Searching for the Keywords '{keywords}' in up to {maxpage} page{s}.")
     s = perf_counter()
     ps = PhDSeeker(keywords, maxpage=maxpage)
     ps.save(output)
-    print(f"\nElapsed time is {perf_counter()-s:.2f} seconds.")
+    rich.print(f"Elapsed time is {perf_counter()-s:.2f}")
 
     if args['--verbose']:
-        print(ps)
+        rich.print(ps)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,6 @@
+0.3.12 - 2022-08-07
+-- Bettter ouptut.
+
 0.3.11 - 2022-08-06
 -- missing `openpyxl` as another dependency to write the output in the excel file
 

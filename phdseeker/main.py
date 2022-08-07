@@ -6,6 +6,7 @@ import httpx
 import http3
 import pandas as pd
 import asyncio
+import rich
 from datetime import date
 from dataclasses import dataclass
 from bs4 import BeautifulSoup as bs
@@ -139,8 +140,9 @@ class PhDSeeker:
             soup = bs(response.text, "html.parser")
             if page == 1:  # get the number of sought positions
                 if (n := soup.select_one(c.sought)) is not None:
-                    self.sought_number = int(re.search('(\d+[,\d*]*)', n.text)[1].replace(',',''))
-                sn = f"<< {self.sought_number} positions found >>"
+                    foundPositions = int(re.search('(\d+[,\d*]*)', n.text)[1].replace(',',''))
+                    self.sought_number += foundPositions
+                sn = f"<< {foundPositions} positions found >>"
                 print(
                     # f"\r[[ {self.sought_number} positions found ]] {' '*(55-len(self.keywords))}"
                     f"\r {sn.center(80)}"
@@ -159,17 +161,16 @@ class PhDSeeker:
                     'scholarshipdb' else country['title'])
                 self.dates.append(date.text.replace('\n', ''))
                 self.links.append(c.baseURL + link['href'])
-        except AssertionError:
-            return False # break
-        except Exception as e:
-            print(e)
-            return False # break
-        finally:
             if self.sought_number:
                 print(
                     f"\rPage {page} has been fetched from {c.baseURL}!",
                     end="")
             return True
+        except AssertionError:
+            return False # break
+        except Exception as e:
+            print(e)
+            return False # break
 
     async def prepare(self):
         for repo in self.repos:
@@ -180,7 +181,6 @@ class PhDSeeker:
             except Exception:
                 for t in tasks:
                     t.cancel()
-            # print()
 
     @property
     def positions(self, ):
@@ -207,12 +207,16 @@ class PhDSeeker:
         return self.df
 
     def save(self, output='both'):
-        # Creates excel/csv files based on all revceived data
+        """Creates excel/csv files based on all revceived data"""
         df = self.positions
-        if output in ('csv', 'both'):
-            df.to_csv(f'{self.file_name}.csv', index=False)
-        if output in ('xlsx', 'both'):
-            df.to_excel(f'{self.file_name}.xlsx', index=False)
+        if self.sought_number:
+            rich.print(f"\n{self.sought_number} positions have been found in total.")
+            if output in ('csv', 'both'):
+                df.to_csv(f'{self.file_name}.csv', index=False)
+            if output in ('xlsx', 'both'):
+                df.to_excel(f'{self.file_name}.xlsx', index=False)
+        else:
+            print('[blink][red] >>> No positions found, change your keyword. <<< [/red][/blink]')
 
 
 def main():
