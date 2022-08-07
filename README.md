@@ -5,6 +5,8 @@
 [![GitHub license](https://img.shields.io/github/license/Aghababaei/PhD-Seeker?style=social)](https://github.com/Aghababaei/PhD-Seeker/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/Aghababaei/PhD-Seeker?style=social)](https://github.com/Aghababaei/PhD-Seeker/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/Aghababaei/PhD-Seeker?style=social)](https://github.com/Aghababaei/PhD-Seeker/issues)
+[![Downloads](https://pepy.tech/badge/phdseeker)](https://pepy.tech/project/phdseeker)
+[![Downloads](https://pepy.tech/badge/phdseeker/month)](https://pepy.tech/project/phdseeker)
 
 
 PhD Seeker is a python web scraper to search for fully funded doctorate positions, advertised on well-known academic position websites.
@@ -100,6 +102,7 @@ Searching for the Keywords 'Computer Science, Machine Learning' in up to 1 page.
 ================================::[ findaphd ]::================================
                              << 64 positions found >>
 Page 1 has been fetched from https://www.findaphd.com!!
+770 positions have been found in total.
 Elapsed time is 3.49 seconds.
 ┏━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃    ┃ Country        ┃ Date               ┃ Title                                                 ┃
