@@ -60,13 +60,24 @@ Get the latest tarball & install:
 
 ### Windows
 
+#### Downloading Archive
+
 Download latest zip archive.
-
+ 
 https://github.com/Aghababaei/PhD-Seeker/archive/master.zip
-
+ 
 Decompress it, and run the following command in root directory of `PhD-Seeker`
-
+ 
     $ python setup.py install
+ 
+#### Adding Python to Windows environmental variables
+
+Prior to running codes, make sure that Python has already added to environmental variables as a `Path`, otherwise:
+
+Right-click on My Computer -> Properties -> Advanced System setting -> Environment Variable -> New
+
+In Variable name write path and in Variable value copy path up to C://Python (i.e., path where Python is installed). Click Ok -> Ok.
+ 
 
 #### Requirements
 **phdseeker**  is relied on several great python packages.
