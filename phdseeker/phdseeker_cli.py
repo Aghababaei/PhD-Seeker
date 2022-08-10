@@ -21,8 +21,9 @@ from docopt import docopt
 from time import perf_counter
 import rich
 from pathlib import Path
+from threading import Thread
 sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
-from phdseeker.main import PhDSeeker
+from phdseeker.main import PhDSeeker, checkNewVersion
 from phdseeker.constants import __version__
 
 def main(args=docopt(__doc__)):
@@ -33,6 +34,9 @@ def main(args=docopt(__doc__)):
     if args['--version']:
         rich.print(f"PhD-Seeker Version {__version__}")
         sys.exit()
+
+    update = { 'message': None }
+    Thread(target=checkNewVersion, args=(update,), daemon=True).start()
 
     keywords = args['--keywords']
     maxpage = int(args['--maxpage'])
@@ -45,6 +49,9 @@ def main(args=docopt(__doc__)):
     ps = PhDSeeker(keywords, maxpage=maxpage)
     ps.save(output)
     rich.print(f"Elapsed time is {perf_counter()-s:.2f}")
+
+    if update['message']:
+        rich.print(update['message'])
 
     if args['--verbose'] and ps.sought_number:
         rich.print(ps)

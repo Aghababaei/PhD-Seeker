@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup as bs
 from pathlib import Path
 sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
 from phdseeker.rich_dataframe import prettify
+from phdseeker.constants import __version__
 
 # Turns off some warnings
 import urllib3
@@ -145,7 +146,7 @@ class PhDSeeker:
                 try:
                     sn = f"<< {foundPositions} positions found >>"
                 except:
-                    sn = f"<< No positions found >>"
+                    sn = "<< No positions found >>"
                 print(
                     # f"\r[[ {self.sought_number} positions found ]] {' '*(55-len(self.keywords))}"
                     f"\r {sn.center(80)}"
@@ -223,6 +224,14 @@ class PhDSeeker:
         else:
             rich.print('[red blink] >>> No positions found, change your keyword. <<< [/red blink]')
 
+def checkNewVersion(output:dict):
+    url = 'https://raw.github.com/Aghababaei/PhD-Seeker/master/phdseeker/constants.py'
+    response = httpx.get(url)
+    url_version = re.search('(__version__ = "(\d\.\d(\.\d+)?)")', response.text, re.M)[2]
+    version = lambda v: list(map(int, v.split('.')))
+    if version(url_version) > version(__version__):
+        message = '[blink]New version ([green]{}[/green]) is available![/blink] Use `pip install --upgrade phdseeker` to update'
+        output['message'] = message.format(url_version)
 
 def main():
     # Comma seperated list of keywords for the field of desired PhD career + presets
