@@ -27,6 +27,7 @@ Simply modify the keywords and you will receive a CSV/XLSX file containing the l
 - [ ] Adding LinkedIn search to get informed directly from university professors
 - [X] Getting the keywords from command line instead of hard-coding the source
 - [X] Fetching pages simultaneously
+- [X] Checking the existence of the new updates and notifying the user
 - [ ] GUI support
 
 Installation
@@ -72,13 +73,13 @@ Decompress it, and run the following command in root directory of `PhD-Seeker`
 
 #### Adding Python to Windows environmental variables
 
-Prior to running codes, make sure that Python has been already added to environmental variables as a `Path`, otherwise:
+Prior to running codes, make sure that Python has been already added to environmental variables as a `PATH`, otherwise:
 
-1. Right-clicking This PC and going to Properties.
-2. Clicking on the Advanced system settings in the menu on the left.
-3. Clicking on the Environment Variables button o​n the bottom right.
-4. In the System variables section, selecting the Path variable and clicking on Edit. The next screen will show all the directories that are currently a part of the PATH variable.
-5. Clicking on New and entering Python’s install directory.
+1. Right-click This PC and going to Properties.
+2. Click on the Advanced system settings in the menu on the left.
+3. Click on the Environment Variables button o​n the bottom right.
+4. In the System variables section, select the Path variable and click on Edit. The next screen will show all the directories that are currently a part of the PATH variable.
+5. Click on New and entering Python’s install directory.
 
 
 #### Requirements
