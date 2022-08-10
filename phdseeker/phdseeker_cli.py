@@ -46,9 +46,8 @@ def main(args=docopt(__doc__)):
     ps.save(output)
     rich.print(f"Elapsed time is {perf_counter()-s:.2f}")
 
-    if args['--verbose']:
-        if ps.sought_number:
-            rich.print(ps)
+    if args['--verbose'] and ps.sought_number:
+        rich.print(ps)
 
 
 if __name__ == "__main__":

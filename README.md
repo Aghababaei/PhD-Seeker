@@ -63,21 +63,23 @@ Get the latest tarball & install:
 #### Downloading Archive
 
 Download latest zip archive.
- 
+
 https://github.com/Aghababaei/PhD-Seeker/archive/master.zip
- 
+
 Decompress it, and run the following command in root directory of `PhD-Seeker`
- 
+
     $ python setup.py install
- 
+
 #### Adding Python to Windows environmental variables
 
-Prior to running codes, make sure that Python has already added to environmental variables as a `Path`, otherwise:
+Prior to running codes, make sure that Python has been already added to environmental variables as a `Path`, otherwise:
 
-Right-click on My Computer -> Properties -> Advanced System setting -> Environment Variable -> New
+1. Right-clicking This PC and going to Properties.
+2. Clicking on the Advanced system settings in the menu on the left.
+3. Clicking on the Environment Variables button o​n the bottom right.
+4. In the System variables section, selecting the Path variable and clicking on Edit. The next screen will show all the directories that are currently a part of the PATH variable.
+5. Clicking on New and entering Python’s install directory.
 
-In Variable name write path and in Variable value copy path up to C://Python (i.e., path where Python is installed). Click Ok -> Ok.
- 
 
 #### Requirements
 **phdseeker**  is relied on several great python packages.
@@ -114,6 +116,8 @@ Searching for the Keywords 'Computer Science, Machine Learning' in up to 1 page.
                              << 64 positions found >>
 Page 1 has been fetched from https://www.findaphd.com!!
 770 positions have been found in total.
+PhD_Positions_2022-08-08[Computer Science, Machine Learning].csv saved!
+PhD_Positions_2022-08-08[Computer Science, Machine Learning].xlsx saved!
 Elapsed time is 3.49 seconds.
 ┏━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃    ┃ Country        ┃ Date               ┃ Title                                                 ┃
@@ -160,5 +164,5 @@ Elapsed time is 3.49 seconds.
 │    │                │                    │ Intelligence, Machine Learning, Wireless              │
 │    │                │                    │ Communication -- Mississippi State University         │
 └────┴────────────────┴────────────────────┴───────────────────────────────────────────────────────┘
-                               All 21 found positions are shown here. 
+                               All 21 found positions are shown here.
 ```

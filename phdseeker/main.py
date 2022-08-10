@@ -100,7 +100,7 @@ class PhDSeeker:
         self.dates = []
         self.links = []
         self.maxpage = maxpage + 1
-        self.file_name = f"PhD_Positions_{date.today()}"
+        self.file_name = f"PhD_Positions_{date.today()}[{keywords}]"
         self.df = None # DataFrame of found positions
         self.sought_number = 0
         self.loop = asyncio.get_event_loop()
@@ -221,7 +221,7 @@ class PhDSeeker:
                 df.to_excel(f'{self.file_name}.xlsx', index=False)
                 rich.print(f'[blue]{self.file_name}.xlsx saved![/blue]')
         else:
-            rich.print('[blink][red] >>> No positions found, change your keyword. <<< [/red][/blink]')
+            rich.print('[red blink] >>> No positions found, change your keyword. <<< [/red blink]')
 
 
 def main():
