@@ -214,7 +214,9 @@ class PhDSeeker:
         """Creates excel/csv files based on all revceived data"""
         df = self.positions
         if self.sought_number:
-            rich.print(f"\n{self.sought_number} positions have been found in total.")
+            s  = 's' if output=='both' else ''
+            rich.print(f"\n{self.sought_number} positions have been found in total.",
+            f"Specifically, {len(df)} records of them have been saved in the following file{s}:" , sep='\n')
             if output in ('csv', 'both'):
                 df.to_csv(f'{self.file_name}.csv', index=False)
                 rich.print(f'[blue]{self.file_name}.csv saved![/blue]')
