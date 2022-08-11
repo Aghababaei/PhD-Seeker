@@ -1,3 +1,6 @@
+0.4.2 - 2022-08-12
+-- Better verbose mode
+
 0.4.1 - 2022-08-11
 -- Prints the number of saved records in the output files on the screen.
 

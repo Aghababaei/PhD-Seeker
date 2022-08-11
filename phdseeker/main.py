@@ -7,6 +7,7 @@ import http3
 import pandas as pd
 import asyncio
 import rich
+from rich.console import Console
 from datetime import date
 from dataclasses import dataclass
 from bs4 import BeautifulSoup as bs
@@ -20,6 +21,7 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+console = Console()
 
 @dataclass
 class Config:
@@ -100,7 +102,7 @@ class PhDSeeker:
         self.countries = []
         self.dates = []
         self.links = []
-        self.maxpage = maxpage + 1
+        self.maxpage = maxpage
         self.file_name = f"PhD_Positions_{date.today()}[{keywords}]"
         self.df = None # DataFrame of found positions
         self.sought_number = 0
@@ -108,10 +110,11 @@ class PhDSeeker:
 
     def __str__(self):
         if self.sought_number:
-            s = ('=' * 80 + '\n#') + 'Sought Ph.D. Positions'.center(78) + (
-                '#\n' + '=' * 80 + '\n')
+            s = 's' if self.maxpage > 1 else ''
+            caption = "│" + f'Out of {self.sought_number} found Ph.D. positions, {len(self.df)} have been fetched in {self.maxpage} page{s}.'.center(console.width-2) + (
+                '│\n└' + '─' * (console.width-2) + '┘\n')
             prettify(self.df[['Country', 'Date', 'Title']], clear_console=False)
-            return ''#s + self.df.to_csv(index=False)
+            return f'{caption}'
 
     async def __get_page__(self, repo, page):
         headers = {
@@ -144,12 +147,11 @@ class PhDSeeker:
                     foundPositions = int(re.search('(\d+[,\d*]*)', n.text)[1].replace(',',''))
                     self.sought_number += foundPositions
                 try:
-                    sn = f"<< {foundPositions} positions found >>"
+                    sn = f">> {foundPositions} positions found <<"
                 except:
-                    sn = "<< No positions found >>"
+                    sn = ">> No positions found <<"
                 print(
-                    # f"\r[[ {self.sought_number} positions found ]] {' '*(55-len(self.keywords))}"
-                    f"\r {sn.center(80)}"
+                    f"\r{sn.center(console.width)}"
                 )
             titles, countries, dates, links = [
                 soup.select(item) if repo == 'scholarshipdb' else
@@ -178,8 +180,8 @@ class PhDSeeker:
 
     async def prepare(self):
         for repo in self.repos:
-            print(f"\r{('::[ '+repo+' ]::').center(80, '=')}")
-            tasks = [asyncio.create_task(self.__get_page__(repo, page)) for page in range(1, self.maxpage)]
+            print(f"\r{('::[ '+repo+' ]::').center(console.width, '=')}")
+            tasks = [asyncio.create_task(self.__get_page__(repo, page)) for page in range(1, self.maxpage+1)]
             try:
                 await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
             except Exception:

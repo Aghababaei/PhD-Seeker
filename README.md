@@ -27,7 +27,7 @@ Simply modify the keywords and you will receive a CSV/XLSX file containing the l
 - [ ] Adding LinkedIn search to get informed directly from university professors
 - [X] Getting the keywords from command line instead of hard-coding the source
 - [X] Fetching pages simultaneously
-- [X] Checking the existence of the new updates and notifying the user
+- [X] Checking the availability of the new updates of `phdseeker` and notifying the user
 - [ ] GUI support
 
 Installation
@@ -108,63 +108,67 @@ options:
 ```
 ### usage example
 ```
-phdseeker -k 'Computer Science, Machine Learning' --maxpage=1 -v
+$ phdseeker -k 'Computer Science, Machine Learning' --maxpage=1 -v
 
 Searching for the Keywords 'Computer Science, Machine Learning' in up to 1 page.
-=============================::[ scholarshipdb ]::==============================
-                            << 706 positions found >>
-================================::[ findaphd ]::================================
-                             << 64 positions found >>
-Page 1 has been fetched from https://www.findaphd.com!!
-770 positions have been found in total.
+========================================::[ scholarshipdb ]::========================================
+                                       >> 704 positions found <<
+===========================================::[ findaphd ]::==========================================
+                                        >> 72 positions found <<
+Page 1 has been fetched from https://www.findaphd.com!
+776 positions have been found in total.
 Specifically, 21 records of them have been saved in the following files:
 PhD_Positions_2022-08-08[Computer Science, Machine Learning].csv saved!
 PhD_Positions_2022-08-08[Computer Science, Machine Learning].xlsx saved!
-Elapsed time is 3.49 seconds.
-┏━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃    ┃ Country        ┃ Date               ┃ Title                                                 ┃
-┡━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ 0  │ Australia      │                    │ Doctoral / Post-Doctoral Position in Computer Science │
-│ 1  │ Belgium        │                    │ PhD Studentship in Computer Science                   │
-│ 2  │ Canada         │ 10 days ago        │ Master’s and PhD students                             │
-│ 3  │ China          │                    │ Discovery of new materials for applications on glass  │
-│    │                │                    │ using Deep Machine Learning and Data Analytics        │
-│ 4  │ China          │                    │ PhD in deep learning for biomedical images of the     │
-│    │                │                    │ pelvic floor                                          │
-│ 5  │ China          │                    │ PhD opportunities in Computer Science at Brunel       │
-│    │                │                    │ University London                                     │
-│ 6  │ China          │                    │ SFI Centre for Research Training in Machine Learning  │
-│ 7  │ Cyprus         │                    │ SFI Centre for Research Training in Machine Learning  │
-│ 8  │ Germany        │ about 17 hours ago │ PhD Position in Artificial Intelligence, Chair of     │
-│    │                │                    │ Information Systems Research                          │
-│ 9  │ Germany        │ 6 days ago         │ PhD Student/Research Assistant at Software Lab (SOLA) │
-│ 10 │ Germany        │                    │ Machine Learning Meets Sequential Monte Carlo Methods │
-│ 11 │ Israel         │ 19 days ago        │ PhD student position                                  │
-│ 12 │ Norway         │ 2 months ago       │ PhD Research Fellow in Informatics - Knowledge        │
-│    │                │                    │ Representation and Machine Learning                   │
-│ 13 │ Norway         │ 3 months ago       │ PhD Fellow in Computer Science - Efficient            │
-│    │                │                    │ distributed machine learning                          │
-│ 14 │ Poland         │                    │ The Constitutive Law Establishment of Advanced High   │
-│    │                │                    │ Strength Steel based on Machine Learning              │
-│ 15 │ Spain          │ 4 days ago         │ CALL 41-2022-1 Researcher in the Sustainable          │
-│    │                │                    │ Artificial Intelligence (SAI) research unit           │
-│ 16 │ Sweden         │ about 15 hours ago │ PhD student in Computational Science and Engineering  │
-│    │                │                    │ with focus on Optimization for Federated Machine      │
-│    │                │                    │ Learning                                              │
-│ 17 │ Switzerland    │ about 2 months ago │ PhD position in the field of Machine Learning         │
-│    │                │                    │ (Graph-based High-dimensional generative models) with │
-│    │                │                    │ application to Medical Data Analysis at the           │
-│    │                │                    │ Department of Computer Science                        │
-│ 18 │ United Kingdom │                    │ SFI Centre for Research Training in Machine Learning  │
-│ 19 │ United Kingdom │                    │ Scholarship for the PhD in Medical Sciences in the    │
-│    │                │                    │ fields of Neuroscience and Biomedical Engineering for │
-│    │                │                    │ the PhD Research Project ‘Development of a            │
-│    │                │                    │ closed-loop controller for automatic administration   │
-│    │                │                    │ of anaesthetic and analgesic agents during surgery    │
-│    │                │                    │ using machine learning methods’                       │
-│ 20 │ United States  │ 19 days ago        │ Fully Funded PhD Positions in Artificial              │
-│    │                │                    │ Intelligence, Machine Learning, Wireless              │
-│    │                │                    │ Communication -- Mississippi State University         │
-└────┴────────────────┴────────────────────┴───────────────────────────────────────────────────────┘
-                               All 21 found positions are shown here.
+Elapsed time is 3.87
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Country           ┃ Date               ┃ Title                                                    ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ 1 Belgium         │                    │ Application of machine learning to screen hyperspectral  │
+│                   │                    │ data for important soil and plant properties             │
+│ 2 China           │                    │ PhD student (m/f/d) in the field of engineering,         │
+│                   │                    │ computer science, technical software development,        │
+│                   │                    │ mathematics, physics, data engineering or similar        │
+│ 3 China           │                    │ SFI Centre for Research Training in Machine Learning     │
+│ 4 Cyprus          │                    │ SFI Centre for Research Training in Machine Learning     │
+│ 5 Denmark         │ about 1 hour ago   │ PhD Position in Computational Genetics and Machine       │
+│                   │                    │ Learning: analysis of multi-omics biological data in     │
+│                   │                    │ novel populations of Brachypodium                        │
+│ 6 Denmark         │ about 18 hours ago │ PhD Stipend in Human-in-the-loop Data Mining and Deep    │
+│                   │                    │ Learning on Graph Data (16-22068)                        │
+│ 7 Germany         │                    │ Discovery of new materials for applications on glass     │
+│                   │                    │ using Deep Machine Learning and Data Analytics           │
+│ 8 Germany         │                    │ Novel techniques for neuromorphic reservoir computing    │
+│ 9 Netherlands     │ 8 days ago         │ PhD Candidate: Graph Neural Networks for Electricity and │
+│                   │                    │ Gas Networks                                             │
+│ 10 Norway         │ 3 months ago       │ PhD Research Fellow in Informatics - Knowledge           │
+│                   │                    │ Representation and Machine Learning                      │
+│ 11 Poland         │                    │ The Constitutive Law Establishment of Advanced High      │
+│                   │                    │ Strength Steel based on Machine Learning                 │
+│ 12 Spain          │ 14 days ago        │ CALL 41-2022-1 Researcher in the Sustainable Artificial  │
+│                   │                    │ Intelligence (SAI) research unit                         │
+│ 13 Suriname       │ 8 days ago         │ PhD "In silico prediction of antibiotic resistance"      │
+│                   │                    │ (M/F)                                                    │
+│ 14 Sweden         │ about 12 hours ago │ PhD student in Computational Science and Engineering     │
+│                   │                    │ with focus on Optimization for Federated Machine         │
+│                   │                    │ Learning                                                 │
+│ 15 Switzerland    │ about 2 months ago │ PhD position in the field of Machine Learning            │
+│                   │                    │ (Graph-based High-dimensional generative models) with    │
+│                   │                    │ application to Medical Data Analysis at the Department   │
+│                   │                    │ of Computer Science                                      │
+│ 16 United Kingdom │ about 20 hours ago │ Research Assistant                                       │
+│ 17 United Kingdom │ 3 days ago         │ PhD Studentship: Implementation of Machine Learning at   │
+│                   │                    │ the Edge                                                 │
+│ 18 United Kingdom │                    │ Machine Learning Meets Sequential Monte Carlo Methods    │
+│ 19 United Kingdom │                    │ PhD Studentship in Computer Science                      │
+│ 20 United Kingdom │                    │ SFI Centre for Research Training in Machine Learning     │
+│ 21 United Kingdom │                    │ Scholarship for the PhD in Medical Sciences in the       │
+│                   │                    │ fields of Neuroscience and Biomedical Engineering for    │
+│                   │                    │ the PhD Research Project ‘Development of a closed-loop   │
+│                   │                    │ controller for automatic administration of anaesthetic   │
+│                   │                    │ and analgesic agents during surgery using machine        │
+│                   │                    │ learning methods’                                        │
+└───────────────────┴────────────────────┴──────────────────────────────────────────────────────────┘
+│                  Out of 776 found Ph.D. positions, 21 have been fetched in 1 page                 │
+└───────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

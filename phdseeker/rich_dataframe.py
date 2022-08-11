@@ -35,6 +35,7 @@ class DataFramePrettify:
         clear_console: bool = True,
     ) -> None:
         self.df = df.reset_index().rename(columns={"index": ""})
+        self.df["Country"] = (self.df.index+1).astype(str) + ' ' + self.df["Country"].astype(str)
         self.table = Table(show_footer=False)
         self.table_centered = Columns(
             (self.table,), align="center", expand=True
@@ -50,14 +51,14 @@ class DataFramePrettify:
             console.clear()
 
     def _add_columns(self):
-        for col in self.columns:
+        for col in self.columns[1:]:
             with beat(self.delay_time):
                 self.table.add_column(str(col))
 
     def _add_rows(self):
         for row in self.rows:
             with beat(self.delay_time):
-                row = [str(item) for item in row]
+                row = [str(item) for item in row[1:]]
                 self.table.add_row(*list(row))
 
     def _add_random_color(self):
@@ -120,7 +121,7 @@ class DataFramePrettify:
             self._add_random_color()
             self._add_style()
             self._adjust_border_color()
-            self._add_caption()
+            # self._add_caption()
 
         return self.table
 
