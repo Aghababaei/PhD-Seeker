@@ -115,8 +115,8 @@ Searching for the Keywords 'Computer Science, Machine Learning' in up to 1 page.
                                        >> 704 positions found <<
 ===========================================::[ findaphd ]::==========================================
                                         >> 72 positions found <<
-Page 1 has been fetched from https://www.findaphd.com!
-776 positions have been found in total.
+
+>>>> 776 positions have been found in total.
 Specifically, 21 records of them have been saved in the following files:
 PhD_Positions_2022-08-08[Computer Science, Machine Learning].csv saved!
 PhD_Positions_2022-08-08[Computer Science, Machine Learning].xlsx saved!

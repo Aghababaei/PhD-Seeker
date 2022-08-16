@@ -136,7 +136,6 @@ class PhDSeeker:
                         headers=headers,
                         **keywords,
                         )
-            # print(' '*70+str(type(client)))
             if isinstance(client, http3.client.AsyncClient):
                 await client.close()
             if isinstance(client, httpx._client.AsyncClient):
@@ -175,7 +174,7 @@ class PhDSeeker:
         except AssertionError:
             return False # break
         except Exception as e:
-            print(e)
+            # print(e)
             return False # break
 
     async def prepare(self):
@@ -217,7 +216,7 @@ class PhDSeeker:
         df = self.positions
         if self.sought_number:
             s  = 's' if output=='both' else ''
-            rich.print(f"\n{self.sought_number} positions have been found in total.",
+            print(f"\r{console.width*' '}\n>>>> {self.sought_number} positions have been found in total.",
             f"Specifically, {len(df)} records of them have been saved in the following file{s}:" , sep='\n')
             if output in ('csv', 'both'):
                 df.to_csv(f'{self.file_name}.csv', index=False)
