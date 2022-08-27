@@ -172,3 +172,10 @@ Elapsed time is 3.87
 │                  Out of 776 found Ph.D. positions, 21 have been fetched in 1 page                 │
 └───────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+
+## Contributors
+
+<a href="https://github.com/Aghababaei/PhD-Seeker/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Aghababaei/PhD-Seeker" />
+</a>
