@@ -5,11 +5,13 @@ phdseeker
 Usage:
     phdseeker -h
     phdseeker -V
+    phdseeker --repolist
     phdseeker [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
 
 options:
     -h --help                       Show this screen.
     -V --version                    Show version.
+    --repolist                      Show the list of repositories.
     -v --verbose                    Show the found positions on the terminal.
     -k <keywords>, --keywords=<keywords>    Declare desired keywords to seek. [default: Computer Science, Machine Learning, Deep Learning]
     -o <filetype(s)>, --output=<filetype(s)>     Set the output type csv/xlsx/both [default: both]
@@ -23,7 +25,7 @@ import rich
 from pathlib import Path
 from threading import Thread
 sys.path.append(Path(__file__).parent.parent.as_posix()) # https://stackoverflow.com/questions/16981921
-from phdseeker.main import PhDSeeker, checkNewVersion
+from phdseeker.main import PhDSeeker, checkNewVersion, Config
 from phdseeker.constants import __version__
 
 def main(args=docopt(__doc__)):
@@ -33,6 +35,13 @@ def main(args=docopt(__doc__)):
     """
     if args['--version']:
         rich.print(f"PhD-Seeker Version {__version__}")
+        sys.exit()
+
+    if args['--repolist']:
+        for i, repo in enumerate(Config.repos().split(','), 1):
+            c = Config(repo)
+            rich.print(f"{i}. {repo:14}: ", end='')
+            rich.print(c.baseURL)
         sys.exit()
 
     update = { 'message': None }
