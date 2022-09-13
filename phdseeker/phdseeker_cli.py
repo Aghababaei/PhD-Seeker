@@ -5,13 +5,11 @@ phdseeker
 Usage:
     phdseeker -h
     phdseeker -V
-    phdseeker --repolist
     phdseeker [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
 
 options:
     -h --help                       Show this screen.
-    -V --version                    Show version.
-    --repolist                      Show the list of repositories.
+    -V --version                    Output version information, and repositories' list and exit.
     -v --verbose                    Show the found positions on the terminal.
     -k <keywords>, --keywords=<keywords>    Declare desired keywords to seek. [default: Computer Science, Machine Learning, Deep Learning]
     -o <filetype(s)>, --output=<filetype(s)>     Set the output type csv/xlsx/both [default: both]
@@ -35,9 +33,7 @@ def main(args=docopt(__doc__)):
     """
     if args['--version']:
         rich.print(f"PhD-Seeker Version {__version__}")
-        sys.exit()
-
-    if args['--repolist']:
+        rich.print('\n>> Repositories included <<')
         for i, repo in enumerate(Config.repos().split(','), 1):
             c = Config(repo)
             rich.print(f"{i}. {repo:14}: ", end='')

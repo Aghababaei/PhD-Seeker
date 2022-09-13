@@ -1,3 +1,6 @@
+0.4.5 - 2022-09-13
+-- list of repositories will be shown under the -V option.
+
 0.4.4 - 2022-09-12
 -- new option --repolist, shows the list of repositories.
 
