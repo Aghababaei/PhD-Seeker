@@ -97,13 +97,14 @@ phdseeker
 Usage:
     phdseeker -h
     phdseeker -V
-    phdseeker [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
+    phdseeker [-k <keywords> -c <countries> --maxpage=<n> --output=<filetype(s)> -v]
 
 options:
     -h --help                       Show this screen.
     -V --version                    Output version information, and repositories' list and exit.
     -v --verbose                    Show the found positions on the terminal.
     -k <keywords>, --keywords=<keywords>    Declare desired keywords to seek. [default: Computer Science, Machine Learning, Deep Learning]
+    -c <countries>, --countries=<countries>    Filter by countries.
     -o <filetype(s)>, --output=<filetype(s)>     Set the output type csv/xlsx/both [default: both]
     --maxpage=<n>                   Maximum number of pages to fetch. [default: 10]
 ```

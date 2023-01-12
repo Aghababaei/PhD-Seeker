@@ -90,7 +90,8 @@ class PhDSeeker:
     def __init__(self,
                 keywords: str,
                 repos: str = 'scholarshipdb, findaphd',
-                maxpage: int = 10):
+                maxpage: int = 10,
+                desired_countries: str = None):
         self.repos = map(str.strip,
                         repos.split(','))  # 'scholarshipdb, findaphd'
         self.keywords = keywords
@@ -98,6 +99,8 @@ class PhDSeeker:
             f"\"{item.replace(' ', '%20')}\""
             for item in map(str.strip, keywords.split(','))
         ])
+        self.desired_countries = desired_countries.split(",") if desired_countries else []
+        self.desired_countries = [country.strip().lower() for country in self.desired_countries]
         self.titles = []
         self.countries = []
         self.dates = []
@@ -160,12 +163,22 @@ class PhDSeeker:
             assert titles != [], 'No titles found'
             for title, country, date, link in zip(
                     titles, countries, dates, links):
-                self.titles.append((title.text).strip())
-                self.countries.append(
-                    country.text if repo ==
-                    'scholarshipdb' else country['title'])
-                self.dates.append(date.text.replace('\n', ''))
-                self.links.append(c.baseURL + link['href'])
+
+                if repo == 'scholarshipdb':
+                    found_country = country.text
+                else:
+                    found_country = country['title']
+
+                save_position = False
+                if not self.desired_countries:  # all countries
+                    save_position = True
+                elif found_country and found_country.lower() in self.desired_countries:
+                    save_position = True
+                if save_position:
+                    self.countries.append(found_country)
+                    self.titles.append((title.text).strip())
+                    self.dates.append(date.text.replace('\n', ''))
+                    self.links.append(c.baseURL + link['href'])
             if self.sought_number:
                 print(
                     f"\rPage {page} has been fetched from {c.baseURL}!",
@@ -212,7 +225,7 @@ class PhDSeeker:
         return self.df
 
     def save(self, output='both'):
-        """Creates excel/csv files based on all revceived data"""
+        """Creates excel/csv files based on all received data"""
         df = self.positions
         if self.sought_number:
             s  = 's' if output=='both' else ''
@@ -237,7 +250,7 @@ def checkNewVersion(output:dict):
         output['message'] = message.format(url_version)
 
 def main():
-    # Comma seperated list of keywords for the field of desired PhD career + presets
+    # Comma separated list of keywords for the field of desired PhD career + presets
     keywords = 'Computer Science, Machine Learning, Deep Learning'
 
     ps = PhDSeeker(keywords, maxpage=10)
