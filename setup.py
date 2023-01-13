@@ -26,6 +26,8 @@ setup(
         'docopt',
         'openpyxl',
         'brotlipy',
+        'bs4',
+        'urllib3',
     ],
     python_requires=">=3.8",
     package_dir={'phdseeker': 'phdseeker'},

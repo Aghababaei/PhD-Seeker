@@ -5,13 +5,14 @@ phdseeker
 Usage:
     phdseeker -h
     phdseeker -V
-    phdseeker [-k <keywords> --maxpage=<n> --output=<filetype(s)> -v]
+    phdseeker [-k <keywords> -c <countries> --maxpage=<n> --output=<filetype(s)> -v]
 
 options:
     -h --help                       Show this screen.
     -V --version                    Output version information, and repositories' list and exit.
     -v --verbose                    Show the found positions on the terminal.
     -k <keywords>, --keywords=<keywords>    Declare desired keywords to seek. [default: Computer Science, Machine Learning, Deep Learning]
+    -c <countries>, --countries=<countries>    Filter by countries.
     -o <filetype(s)>, --output=<filetype(s)>     Set the output type csv/xlsx/both [default: both]
     --maxpage=<n>                   Maximum number of pages to fetch. [default: 10]
 '''
@@ -44,14 +45,14 @@ def main(args=docopt(__doc__)):
     Thread(target=checkNewVersion, args=(update,), daemon=True).start()
 
     keywords = args['--keywords']
+    countries = args['--countries']
     maxpage = int(args['--maxpage'])
-    verbose = args['--verbose']
     output = args['--output']
 
     s = 's' if maxpage>1 else ''
-    rich.print(f"Searching for the Keywords '{keywords}' in up to {maxpage} page{s}.")
+    rich.print(f"Searching for the Keywords '{keywords}' in '{countries}' up to {maxpage} page{s}.")
     s = perf_counter()
-    ps = PhDSeeker(keywords, maxpage=maxpage)
+    ps = PhDSeeker(keywords, maxpage=maxpage, desired_countries=countries)
     ps.save(output)
     rich.print(f"Elapsed time is {perf_counter()-s:.2f}")
 

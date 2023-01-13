@@ -5,3 +5,5 @@ docopt
 pandas
 openpyxl
 brotlipy
+bs4
+urllib3
