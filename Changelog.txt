@@ -1,3 +1,6 @@
+0.4.7 - 2023-01-26
+-- fixed issue with no desired countries
+
 0.4.6 - 2023-01-12
 -- -c, --countries option to filter by country
 -- fixed issue with no desired countries announcement

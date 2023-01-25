@@ -169,9 +169,9 @@ class PhDSeeker:
                 else:
                     found_country = country['title']
 
-                save_position = True
-                if not (found_country and found_country.lower() in self.desired_countries):
-                    save_position = False
+                save_position = not self.desired_countries # all countries
+                if found_country and found_country.lower() in self.desired_countries:
+                    save_position = True
                 if save_position:
                     self.countries.append(found_country)
                     self.titles.append((title.text).strip())
