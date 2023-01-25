@@ -50,7 +50,8 @@ def main(args=docopt(__doc__)):
     output = args['--output']
 
     s = 's' if maxpage>1 else ''
-    rich.print(f"Searching for the Keywords '{keywords}' in '{countries}' up to {maxpage} page{s}.")
+    incountries = f"in '{countries}' " if countries!=None else ''
+    rich.print(f"Searching for the Keywords '{keywords}' {incountries}up to {maxpage} page{s}.")
     s = perf_counter()
     ps = PhDSeeker(keywords, maxpage=maxpage, desired_countries=countries)
     ps.save(output)

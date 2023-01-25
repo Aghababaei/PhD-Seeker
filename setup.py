@@ -13,7 +13,7 @@ version = re.search(
 setup(
     name="phdseeker",
     version=version,
-    author="Amin Aghababaei, Javad Razavian",
+    author="Amin Aghababaei, Javad Razavian, Ana Paula Gomes",
     author_email="amin.aghababaei@outlook.com, javadr@gmail.com",
     maintainer='Javad Razavian',
     maintainer_email="javadr@gmail.com",

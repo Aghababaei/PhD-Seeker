@@ -24,7 +24,8 @@ utest: setup
 upload: setup upypi utest
 
 clean: ver
-	rm phdseeker.egg-info/ -rfv
-	rm build/ -rfv
-	rm dist/ -rfv
-	rm phdseeker*.spec -rfv
+	@rm phdseeker.egg-info/ -rfv
+	@rm build/ -rfv
+	@rm dist/ -rfv
+	@rm phdseeker*.spec -rfv
+	@rm PhD_Positions_*csv PhD_Positions_*xlsx -rfv
