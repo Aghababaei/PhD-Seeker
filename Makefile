@@ -9,8 +9,8 @@ setup: ver
 	python setup.py sdist
 	python setup.py bdist_wheel
 
-lins: ver
-	python setup.py install
+lins: ver setup
+	pip install "dist/phdseeker-$(VER)-py3-none-any.whl"
 
 pins: ver
 	pip install phdseeker==$(VER)
@@ -22,6 +22,10 @@ utest: setup
 	twine upload -r testpypi "dist/phdseeker-$(VER).tar.gz"
 
 upload: setup upypi utest
+
+.PHONY: uninstall
+uninstall:
+	pip uninstall phdseeker
 
 clean: ver
 	@rm phdseeker.egg-info/ -rfv
