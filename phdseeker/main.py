@@ -239,7 +239,7 @@ class PhDSeeker:
             rich.print('[red blink] >>> No positions found, change your keyword. <<< [/red blink]')
 
 def checkNewVersion(output:dict):
-    url = 'https://raw.github.com/Aghababaei/PhD-Seeker/master/phdseeker/constants.py'
+    url = 'https://raw.githubusercontent.com/Aghababaei/PhD-Seeker/master/phdseeker/constants.py'
     response = httpx.get(url)
     url_version = re.search('(__version__ = "(\d\.\d(\.\d+)?)")', response.text, re.M)[2]
     version = lambda v: list(map(int, v.split('.')))
