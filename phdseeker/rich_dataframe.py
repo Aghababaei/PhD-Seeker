@@ -27,7 +27,6 @@ def beat(length: int = 1) -> None:
 
 
 class DataFramePrettify:
-
     def __init__(
         self,
         df: pd.DataFrame,
@@ -35,11 +34,9 @@ class DataFramePrettify:
         clear_console: bool = True,
     ) -> None:
         self.df = df.reset_index().rename(columns={"index": ""})
-        self.df["Country"] = (self.df.index+1).astype(str) + ' ' + self.df["Country"].astype(str)
+        self.df["Country"] = (self.df.index + 1).astype(str) + " " + self.df["Country"].astype(str)
         self.table = Table(show_footer=False)
-        self.table_centered = Columns(
-            (self.table,), align="center", expand=True
-        )
+        self.table_centered = Columns((self.table,), align="center", expand=True)
         self.num_colors = len(COLORS)
         self.delay_time = delay_time
         self.clear_console = clear_console
@@ -64,16 +61,12 @@ class DataFramePrettify:
     def _add_random_color(self):
         for i in range(len(self.table.columns)):
             with beat(self.delay_time):
-                self.table.columns[i].header_style = COLORS[
-                    i % self.num_colors
-                ]
+                self.table.columns[i].header_style = COLORS[i % self.num_colors]
 
     def _add_style(self):
         for i in range(len(self.table.columns)):
             with beat(self.delay_time):
-                self.table.columns[i].style = (
-                    "bold " + COLORS[i % self.num_colors]
-                )
+                self.table.columns[i].style = "bold " + COLORS[i % self.num_colors]
 
     def _adjust_box(self):
         for box in [SIMPLE_HEAD, SIMPLE, MINIMAL, SQUARE]:
@@ -107,7 +100,9 @@ class DataFramePrettify:
 
     def _add_caption(self):
         with beat(self.delay_time):
-            self.table.caption = f"All [bold green]{len(self.rows)}[/bold green] found positions are shown here."
+            self.table.caption = (
+                f"All [bold green]{len(self.rows)}[/bold green] found positions are shown here."
+            )
 
     def prettify(self):
         with Live(
@@ -142,9 +137,7 @@ def prettify(
         Clear the console before priting the table, by default True. If this is set to false the previous console input/output is maintained
     """
     if isinstance(df, pd.DataFrame):
-        DataFramePrettify(
-            df, delay_time,clear_console
-        ).prettify()
+        DataFramePrettify(df, delay_time, clear_console).prettify()
 
     else:
         # In case users accidentally pass a non-datafame input, use rich's print instead

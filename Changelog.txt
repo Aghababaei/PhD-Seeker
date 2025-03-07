@@ -1,3 +1,6 @@
+0.5 - 2025-03-07
+-- Remove dependency on http3 to make it compatible with recent version of python.
+
 0.4.8 - 2025-03-07
 -- Freeze package versions, as some are deprecated and no longer work with newer versions of Python.
 
