@@ -1,3 +1,6 @@
+0.4.8 - 2025-03-07
+-- Freeze package versions, as some are deprecated and no longer work with newer versions of Python.
+
 0.4.7 - 2023-01-26
 -- fixed issue with no desired countries
 
