@@ -38,9 +38,17 @@ class Config:
             "date": ".list-unstyled span.text-muted",
             "link": ".list-unstyled h4 a",
         },
-        "findaphd": {
+        "findaphd-noneu": {
             "sought#": "h4.course-count.d-none.d-md-block.h6.mb-0.mt-1",
             "query": "https://www.findaphd.com/phds/non-eu-students/?01w0&Keywords={fields}&PG={page}",
+            "title": "h4 text-dark mx-0 mb-3",
+            "country": "country-flag img-responsive phd-result__dept-inst--country-icon",
+            "date": "apply py-2 small",
+            "link": "h4 text-dark mx-0 mb-3",
+        },
+        "findaphd-eu": {
+            "sought#": "h4.course-count.d-none.d-md-block.h6.mb-0.mt-1",
+            "query": "https://www.findaphd.com/phds/eu-students/?01g0&Keywords={fields}&PG={page}",
             "title": "h4 text-dark mx-0 mb-3",
             "country": "country-flag img-responsive phd-result__dept-inst--country-icon",
             "date": "apply py-2 small",
@@ -90,7 +98,7 @@ class PhDSeeker:
     def __init__(
         self,
         keywords: str,
-        repos: str = "scholarshipdb, findaphd",
+        repos: str = Config.repos(),  # "scholarshipdb, findaphd",
         maxpage: int = 10,
         desired_countries: Optional[str] = None,
     ):
@@ -219,6 +227,7 @@ class PhDSeeker:
         # eval is not applicable to the empty string
         self.df["timedelta"] = self.df["timedelta"].apply(lambda x: eval(x) if x else x)
         self.df.sort_values(by=["Country", "timedelta", "Title"], inplace=True)
+        self.df.drop_duplicates(inplace=True)
         self.df = self.df.drop("timedelta", axis=1).reset_index(drop=True)
         return self.df
 

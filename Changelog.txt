@@ -1,3 +1,6 @@
+0.5.1 - 2025-03-08
+-- Add findaphd-eu
+
 0.5 - 2025-03-07
 -- Remove dependency on http3 to make it compatible with recent version of python.
 
