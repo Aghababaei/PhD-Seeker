@@ -141,7 +141,7 @@ class PhDSeeker:
 
             if page == 1:  # get the number of sought positions
                 if (n := soup.select_one(c.sought)) is not None:
-                    foundPositions = int(re.search("(\d+[,\d*]*)", n.text)[1].replace(",", ""))
+                    foundPositions = int(re.search(r"(\d+[,\d*]*)", n.text)[1].replace(",", ""))
                     self.sought_number += foundPositions
                 try:
                     sn = f">> {foundPositions} positions found <<"
@@ -245,7 +245,7 @@ class PhDSeeker:
 def checkNewVersion(output: dict):
     url = "https://raw.githubusercontent.com/Aghababaei/PhD-Seeker/master/phdseeker/constants.py"
     response = httpx.get(url)
-    match = re.search('__version__ = "(\d+\.\d+(?:\.\d+)?)"', response.text)
+    match = re.search(r'__version__ = "(\d+\.\d+(?:\.\d+)?)"', response.text)
     if match:
         url_version = match.group(1)
         version = lambda v: list(map(int, v.split(".")))
