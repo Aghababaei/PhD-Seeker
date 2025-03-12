@@ -29,6 +29,7 @@ uninstall:
 
 clean: ver
 	@rm phdseeker.egg-info/ -rfv
+	@rm phdseeker/__pycache__ -rfv
 	@rm build/ -rfv
 	@rm dist/ -rfv
 	@rm phdseeker*.spec -rfv
