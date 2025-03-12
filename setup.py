@@ -7,7 +7,7 @@ from setuptools import setup
 version = re.search(
     r'(__version__ = "(\d\.\d(\.\d+)?)")',
     open("phdseeker/constants.py", encoding="utf8").read(),
-    re.M
+    re.M,
 )[2]
 
 setup(
@@ -15,28 +15,30 @@ setup(
     version=version,
     author="Amin Aghababaei, Javad Razavian, Ana Paula Gomes",
     author_email="amin.aghababaei@outlook.com, javadr@gmail.com",
-    maintainer='Javad Razavian',
+    maintainer="Javad Razavian",
     maintainer_email="javadr@gmail.com",
-    packages=['phdseeker',],
+    packages=["phdseeker"],
+    package_data={"": ["repo.yaml"]},  # Include repo.yaml
     install_requires=[
-        'brotlipy',
-        'bs4',
-        'docopt',
-        'httpx',
-        'openpyxl',
-        'pandas',
-        'rich',
-        'urllib3',
+        "brotlipy",
+        "bs4",
+        "docopt",
+        "httpx",
+        "openpyxl",
+        "pandas",
+        "PyYAML",
+        "rich",
+        "urllib3",
     ],
     python_requires=">=3.8",
-    package_dir={'phdseeker': 'phdseeker'},
+    package_dir={"phdseeker": "phdseeker"},
     description="PhD Seeker is a python web scraper to search for fully funded doctorate positions, advertised on well-known academic position websites.",
     license="GPLv3",
     keywords="Ph.D. Positions, phdseeker, Academia",
     url="https://github.com/Aghababaei/PhD-Seeker",
     entry_points={
-        'console_scripts': [
-            'phdseeker = phdseeker.phdseeker_cli:main',
+        "console_scripts": [
+            "phdseeker = phdseeker.phdseeker_cli:main",
         ],
     },
     long_description_content_type="text/markdown",
