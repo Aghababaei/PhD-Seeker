@@ -1,3 +1,6 @@
+0.5.2 - 2025-03-12
+-- Move repository configurations to repo.yaml for better modularity.
+
 0.5.1 - 2025-03-08
 -- Add findaphd-eu
 

@@ -12,6 +12,7 @@ import httpx
 import pandas as pd
 import rich
 import urllib3
+import yaml
 from bs4 import BeautifulSoup as bs
 from rich.console import Console
 
@@ -29,32 +30,8 @@ console = Console()
 
 @dataclass
 class Config:
-    config = {
-        "scholarshipdb": {
-            "sought#": "h1.title",
-            "query": "https://scholarshipdb.net/scholarships/Program-PhD?page={page}&q={fields}",
-            "title": "h4 a",
-            "country": ".list-unstyled a.text-success",
-            "date": ".list-unstyled span.text-muted",
-            "link": ".list-unstyled h4 a",
-        },
-        "findaphd-noneu": {
-            "sought#": "h4.course-count.d-none.d-md-block.h6.mb-0.mt-1",
-            "query": "https://www.findaphd.com/phds/non-eu-students/?01w0&Keywords={fields}&PG={page}",
-            "title": "h4 text-dark mx-0 mb-3",
-            "country": "country-flag img-responsive phd-result__dept-inst--country-icon",
-            "date": "apply py-2 small",
-            "link": "h4 text-dark mx-0 mb-3",
-        },
-        "findaphd-eu": {
-            "sought#": "h4.course-count.d-none.d-md-block.h6.mb-0.mt-1",
-            "query": "https://www.findaphd.com/phds/eu-students/?01g0&Keywords={fields}&PG={page}",
-            "title": "h4 text-dark mx-0 mb-3",
-            "country": "country-flag img-responsive phd-result__dept-inst--country-icon",
-            "date": "apply py-2 small",
-            "link": "h4 text-dark mx-0 mb-3",
-        },
-    }
+    with open(Path(__file__).parent / "repo.yaml") as file_:
+        config = yaml.safe_load(file_)
 
     def __init__(self, repo="scholarshipdb"):
         self.repo = repo
